@@ -15,7 +15,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Project definitions
-project(NISE VERSION 3.1 LANGUAGES C)
+project(NISE VERSION 3.1 LANGUAGES C CUDA)
 add_subdirectory("src")
 add_subdirectory("doc")
 add_subdirectory("example")

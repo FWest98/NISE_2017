@@ -11,7 +11,7 @@ add_executable(NISE
     NISE.c NISE.h types.h lapack.h polar.c polar.h NISE_subs.c NISE_subs.h
     1DFFT.c 1DFFT.h absorption.h absorption.c population.c c_absorption.c
     calc_2DIR.c calc_2DES.c luminescence.c calc_CD.c calc_CD.h analyse.c
-    readinput.c readinput.h types_MPI.h types_MPI.c
+    readinput.c readinput.h types_MPI.h types_MPI.c NISE_subs_gpu.cuh NISE_subs_gpu.cu
     $<TARGET_OBJECTS:random_lib>
 )
 
@@ -59,12 +59,16 @@ if(NOT WIN32)
 endif()
 
 if(NOT WIN32 AND NOT ACCURATE_MATHS)
-    target_compile_options(NISE PUBLIC -ffast-math)
+    target_compile_options(NISE PUBLIC -Xcompiler "-ffast-math")
 elseif(NOT ACCURATE_MATHS)
-    target_compile_options(NISE PUBLIC /fp:fast)
+    target_compile_options(NISE PUBLIC -Xcompiler "/fp:fast")
 endif()
 
 ## Set features
 target_compile_features(NISE PUBLIC c_std_99)
 target_compile_features(2DFFT PUBLIC c_std_99)
 target_compile_features(translate PUBLIC c_std_99)
+
+## CUDA
+set_target_properties(NISE PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+set_target_properties(NISE PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
