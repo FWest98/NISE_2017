@@ -1,7 +1,6 @@
 #ifndef _NONSUBS_
 #define _NONSUBS_
 
-#include "lapack.h"
 void** calloc2D(size_t nRows, size_t nCols, size_t size, size_t sizeP);
 void free2D(void** arr);
 void copyvec(float *a,float *b,int N);
@@ -22,8 +21,7 @@ int read_cluster(t_non *non,int pos,int *cl,FILE *FH);
 void propagate_vec_DIA(t_non *non,float *H,float *cr,float *ci,int sign);
 int propagate_vec_DIA_S(t_non *non,float *Hamiltonian_i,float *cr,float *ci,int sign);
 void propagate_vec_coupling_S(t_non *non,float *Hamiltonian_i,float *cr,float *ci,int m,int sign);
-void propagate_vec_coupling_S_doubles(t_non *non,float *Hamiltonian_i,float *cr,float 
-*ci,int m,float *Anh);
+void propagate_vec_coupling_S_doubles(t_non *non,float *Hamiltonian_i,float *cr,float *ci,int m,float *Anh);
 void diagonalizeLPD(float *H,float *v,int N);
 void build_diag_H(float *Hamiltonian_i,float *H,float *e,int N);
 void generateCS(float *X,float *Y,float *Z);
@@ -48,5 +46,16 @@ inline int Sindex(int a, int b, int N) { // inline to make it quicker
     }
     return ind;
 }
+
+// C++ code
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void propagate_vec_coupling_S_doubles_GPU(t_non* non, float* Hamiltonian_i, float* cr, float* ci, int m, float* Anh);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _NONSUBS_

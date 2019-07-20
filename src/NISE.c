@@ -16,6 +16,7 @@
 #include "calc_CD.h"
 #include "population.h"
 #include <mpi.h>
+#include <arrayfire.h>
 
 /* This is the 2017 version of the NISE program
    It allow calculating linear absorption and 2D(IR) spectra
@@ -67,6 +68,8 @@ int main(int argc, char* argv[]) {
     if (parentRank == 0) {
         /* Time parameters */
         time(&timeStart);
+
+        af_info();
 
         /* Intro */
         printf("----- ----- ----- ----- ----- -----\n");

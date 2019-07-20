@@ -8,7 +8,7 @@ add_library(random_lib OBJECT randomlib.h randomlib.c)
 
 # Define executables
 add_executable(NISE
-    NISE.c NISE.h types.h lapack.h polar.c polar.h NISE_subs.c NISE_subs.h
+    NISE.c NISE.h types.h lapack.h polar.c polar.h NISE_subs.c NISE_subs.h NISE_subs.cpp
     1DFFT.c 1DFFT.h absorption.h absorption.c population.c c_absorption.c
     calc_2DIR.c calc_2DES.c luminescence.c calc_CD.c calc_CD.h analyse.c
     readinput.c readinput.h types_MPI.h types_MPI.c
@@ -44,6 +44,14 @@ target_include_directories(2DFFT PUBLIC ${FFTW_INCLUDE_DIRS})
 # OpenMP
 find_package(OpenMP REQUIRED)
 target_link_libraries(NISE OpenMP::OpenMP_C)
+
+# OpenCL
+find_package(OpenCL REQUIRED)
+#target_link_libraries(NISE OpenCL::OpenCL)
+
+# ArrayFire
+find_package(ArrayFire REQUIRED)
+target_link_libraries(NISE ArrayFire::af)
 
 # MPI
 find_package(MPI REQUIRED)

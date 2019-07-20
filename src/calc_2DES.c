@@ -630,7 +630,7 @@ void calc_2DES(t_non* non, int parentRank, int parentSize, int subRank, int subS
                         schedule(static, 1)
 
                     for (t1 = 0; t1 < non->tmax1; t1++) {
-                        propagate_vec_coupling_S_doubles(
+                        propagate_vec_coupling_S_doubles_GPU(
                             non, Hamil_i_e, ft1r[t1], ft1i[t1], non->ts, Anh
                         );
                     }
