@@ -1,23 +1,51 @@
-\chapter{Details on the available techniques}
-In this Chapter, more details on special options and the theory behind each technique is given.
+\chapter{\label{chap:techniques}Details on the available techniques}
+In this Chapter, more details on special options and the theory behind each technique is given. The techniques marked with a star (*) are implemented with OpenMP and MPI options, while techniques implemented with OpenMP options are marked with a plus (+). All other techniques are implemented as single CPU. 
 \section{Analyse}
+The Hamiltonian is analysed and different statistical properties are provided including the average delocalization size of Thouless \cite{Thouless.1974.PR.13.93}. This inverse participation ratio (IPR) is expressed as:
+\begin{equation}
+	D_{IPR}=\left\langle\frac{1}{N}\sum_i\left(\sum_j |c_{ij}|^{4}\right)^{-1}\right \rangle.
+\end{equation}
+In a file named Analyse.dat statistics is given for each site including. This include the average energy and the standard deviation. The average coupling strength (signed sum of all couplings of a given site with all other sites) and the standard deviation of this quantity.
+In a file named Av\_Hamiltonian.txt. The average Hamiltonian is stored as a single snapshot in the GROASC format.
 \section{Pop (population transfer)}
+The population transfer is calculated between sites. In general, this is governed by the equation:
+\begin{equation}
+P_{fi}(t)=\langle |U_{fi}(t,0)|^2 \rangle
+\end{equation}
+Here $f$ and $i$ are the final and initial sites. Generally two files are generated. In Pop.dat average of the population remaining on the initial site ($P_{ii}$) is calculated resulting in a value starting at 1 (all popiulation is on the initial state) and decaying to the equilibrium value 1/N (equal population on all states). In the PopF.dat file a full matrix op all combinations of initial and final states is given. The columns start start with the first initial state and all possible final states continuing to the second possible initial state and all possible final states. This file may be very large for large system sizes!
 \section{Dif (diffusion)}
 Not implemented yet (check NISE\_2015)
 \section{Ani (anisotropy)}
 Not implemented yet (check NISE\_2015)
 \section{Absorption}
+The linear absorption is calculated using the first-order response function
+\begin{equation}
+	I(t)=\sum_{\alpha}^{xyz}\langle\mu_{\alpha}(t)U(t,0)\mu_{\alpha}(0)\rangle\exp(-t/T_1).
+\end{equation}
+Both the real and imaginary parts are stored. The Fourier transform is the frequency domain absorption, which is stored in the file Absorption.dat. $T_1$ is the lifetime, which is often simply used as an appodization function to smoothen the spectrum. 
 \section{Luminescence}
+The luminescence is calculated using the first-order response function
+\begin{equation}
+	I(t)=\sum_{\alpha}^{xyz}\langle\frac{1}{Z}\mu_{\alpha}(t)U(t,0)\exp(H(0)/k_BT)\mu_{\alpha}(0)\rangle\exp(-t/T_1).
+\end{equation}
+Both the real and imaginary parts are stored. The Fourier transform is the frequency domain luminescence, which is stored in the file Luminescence.dat. $T_1$ is the lifetime, which is often simply used as an appodization function to smoothen the spectrum. The Boltzmann term containg the Hamiltonian at time zero ($H$) and the temperature (to be specified in the input) ensure the emission from a termalized population of the excited state ignoring a potential Stoke's shift and effects of vibronic states. The spectrum is normalized with the partition function. 
 \section{LD (linear dichroism)}
-Not implemented yet (check NISE\_2015)
+The linear dichroism is calculated identically to the linear absorption except the absorption in the x and y directions are subtracted from the absorption in the z direction. This corresponds to a perfect linear dichroism setup, where the molecules are aligned along the z-axis.
 \section{CD (circular dichroism)}
- Not implemented yet
+The circular dichroism is calculated using the first-order response function
+\begin{equation}
+	I(t)=\sum_{\alpha}^{xyz}\sum_{nm}\langle r_{nm}\mu_{\alpha,n}(t)\times[U(t,0)\mu_{\alpha,m}(0)]\rangle\exp(-t/T_1).
+\end{equation}
+Both the real and imaginary parts are stored. The Fourier transform is the frequency domain absorption, which is stored in the file Absorption.dat. $T_1$ is the lifetime, which is often simply used as an appodization function to smoothen the spectrum.
 \section{Raman}
+Not implemented yet
 \section{SFG (sum-frequency generation)}
 Not implemented yet (check NISE\_2015)
-\section{2DIR (two-dimensional infrared)}
-\section{2DSFG (two-dimensional sum-frequency generation)}
+\section{2DIR$^{*}$ (two-dimensional infrared)}
+This calculates the two-dimensional infrared spectra assuming coupled three level systems. The techniques GBIR (ground state bleach), SEIR (stimulated emission), and EAIR (excited state absorption) provides these contributions separetely. Furthermore the sum of the ground state bleach and the stimulated emission can be calculated with the noEA technique keyword. The expressions for the response functions are given in ref. \cite{Jansen.2006.JPCB.110.22910}.
+\section{2DSFG (two-dimensional sum-frequency\\ generation)}
  Not implemented yet (check NISE\_2015)
-\section{2DUVvis (two-dimensional electronic spectroscopy)}
-\section{2DFD (fluorescence detected two-dimensional spectroscopy)}
- Not implemented yet
+\section{2DUVvis$^{*}$ (two-dimensional electronic\\ spectroscopy)}
+This calculates the two-dimensional infrared spectra assuming coupled two level systems. The techniques GBUVvis (ground state bleach), SEUVvis (stimulated emission), and EAUVvis (excited state absorption) provides these contributions separetely. Furthermore the sum of the ground state bleach and the stimulated emission can be calculated with the noEAUVvis technique keyword. 
+\section{2DFD (fluorescence detected two-dimensional\\ spectroscopy)}
+ The 2DFD spectrum can be calculated in the approximation that all exciton pairs annihilate to produce a single exciton long before fluorescence occur with the noEAUVvis technique. The response functions governing this technique are provided in ref. \cite{Kunsel_2018}.
